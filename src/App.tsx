@@ -1,51 +1,14 @@
-import React from "react";
+import React, { FC } from "react";
 import { Amplify } from "aws-amplify";
-import {
-  AmplifyProvider,
-  Authenticator,
-  Button,
-  Flex,
-  Text,
-  View,
-} from "@aws-amplify/ui-react";
 import aws_exports from "./aws-exports";
-import "@aws-amplify/ui-react/styles.css";
-import "./index.css"
+import Login from "./components/pages/login";
 Amplify.configure(aws_exports);
 
-const App = () => {
+const App:FC = () => {
   return (
-    <AmplifyProvider>
-      <Authenticator className="bg-red-800">
-        {({ signOut, user }) => (
-          <Flex
-            direction="column"
-            justifyContent="flex-start"
-            alignItems="center"
-            alignContent="flex-start"
-            wrap="nowrap"
-            gap="1rem"
-            textAlign="center"
-          >
-
-            {user && (
-              <View width="100%">
-                <Text>Hello {user.username}</Text>
-                <Button onClick={signOut} className="bg-red-500">
-                  <Text>Sign Out</Text>
-                </Button>
-              </View>
-            )}
-
-            <View width="100%">
-              <Text>
-                Edit <code>src/App.tsx</code> and save to reload.
-              </Text>
-            </View>
-          </Flex>
-        )}
-      </Authenticator>
-    </AmplifyProvider>
+    <div className="h-screen bg-black">
+      <Login/>
+    </div>
   );
 };
 
