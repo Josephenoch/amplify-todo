@@ -1,14 +1,27 @@
-import React, { FC } from "react";
+import React from "react";
 import { Amplify } from "aws-amplify";
+import {
+  AmplifyProvider,
+  Authenticator,
+} from "@aws-amplify/ui-react";
 import aws_exports from "./aws-exports";
-import Login from "./components/pages/login";
+
+import "@aws-amplify/ui-react/styles.css";
+import Todo from "./components/todo";
+
 Amplify.configure(aws_exports);
 
-const App:FC = () => {
+const App = () => {
   return (
-    <div className="h-screen bg-black">
-      <Login/>
-    </div>
+    <AmplifyProvider >
+      <Authenticator>
+        {({ signOut, user }) => (
+         <div className="h-screen">
+            {user && (<Todo/>)}
+        </div>
+        )}
+      </Authenticator>
+    </AmplifyProvider>
   );
 };
 
