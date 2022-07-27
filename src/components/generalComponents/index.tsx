@@ -1,5 +1,6 @@
-import Icon from "./icon"
+import IconContainer from "./icon"
 import Input from "./input"
+import Button from "./button"
 
 
-export {Input, Icon}
+export {Input, IconContainer, Button}
