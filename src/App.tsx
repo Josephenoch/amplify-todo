@@ -16,7 +16,7 @@ const App = () => {
     <AmplifyProvider >
       <Authenticator>
         {({ signOut, user }) => (
-         <div className="h-screen">
+         <div className="min-h-screen">
             {user && (<Todo/>)}
         </div>
         )}
