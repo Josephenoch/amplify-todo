@@ -4,11 +4,13 @@ import Header from './header'
 import Task from './task'
 import {IoMdAddCircleOutline} from "react-icons/io"
 import IconContainer from '../generalComponents/icon'
-import { API, graphqlOperation } from 'aws-amplify'
-import { listTodos } from '../../graphql/queries'
+import {DataStore} from 'aws-amplify'
 import { ITodo } from '../../interfaces/todo'
-import { createTodo } from '../../graphql/mutations'
-const Todo:FC = () => {
+import {Todo as TodoModel} from "../../models"
+type Props = {
+  signOut:any
+}
+const Todo:FC<Props> = ({signOut}) => {
   const [modal, setModal] = useState<boolean>(false)
   const [data, setData] = useState<any>([])
   const handleModal=()=>{
@@ -17,7 +19,12 @@ const Todo:FC = () => {
   const addData = async (data:ITodo) =>{
     try{
       if(data.title==="" || data.deadLine===null) return 
-      await API.graphql(graphqlOperation(createTodo,{input:data}))
+      await DataStore.save(
+        new TodoModel({
+          deadLine:data.deadLine,
+          title:data.title
+        })
+      )
     }
     catch(err){
       console.error(err)
@@ -25,13 +32,14 @@ const Todo:FC = () => {
   }
   useEffect(()=>{
     fetchData()
+    const subscription = DataStore.observe(TodoModel).subscribe(()=>fetchData())
+    return ()=> subscription.unsubscribe()
   },[])
   const fetchData = async() =>{
     try{
-      const todoData:any = await API.graphql(graphqlOperation(listTodos) )
-      const todos = todoData.data.listTodos.items
-      setData(todos)
-      console.log(todos)
+      const todoData = await DataStore.query(TodoModel)
+      setData(todoData)
+      console.log(todoData)
     }
     catch(err){
       console.log(err)

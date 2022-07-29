@@ -17,7 +17,7 @@ const App = () => {
       <Authenticator>
         {({ signOut, user }) => (
          <div className="min-h-screen">
-            {user && (<Todo/>)}
+            {user && (<Todo signOut={signOut}/>)}
         </div>
         )}
       </Authenticator>
